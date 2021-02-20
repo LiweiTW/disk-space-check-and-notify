@@ -87,7 +87,7 @@ class CheckDiskSpace extends Command
                     $client = new Client();
                     $response = $client->post($URI, [RequestOptions::JSON => [
                         "title" => "$displayName - " . Arr::get($message, "path", ""),
-                        "text" => "**{$message["freeSpacePercent"]}**% used. {$message["freeSpace"]} GB of {$message["totalSpace"]} GB",
+                        "text" => "**{$message["freeSpacePercent"]}**% left. {$message["freeSpace"]} GB of {$message["totalSpace"]} GB",
                     ]]);
                 }
             default:

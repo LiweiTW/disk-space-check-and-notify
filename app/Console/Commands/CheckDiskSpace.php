@@ -90,6 +90,36 @@ class CheckDiskSpace extends Command
                         "text" => "**{$message["freeSpacePercent"]}**% left. {$message["freeSpace"]} GB of {$message["totalSpace"]} GB",
                     ]]);
                 }
+            case "slack":
+                foreach ($result as $message) {
+                    $displayName = env("DISPLAY_NAME");
+                    $URI = env("SLACK_WEBHOOK");
+                    $client = new Client();
+                    $response = $client->post($URI, [RequestOptions::JSON => [
+                        "blocks" => [
+                            [
+                                "type" => "header",
+                                "text" => [
+                                    "type" => "plain_text",
+                                    "text" => "$displayName - " . Arr::get($message, "path", ""),
+                                ],
+                            ],
+                            [
+                                "type" => "context",
+                                "elements" => [
+                                    [
+                                        "type" => "mrkdwn",
+                                        "text" => "`{$message["freeSpacePercent"]}%` left. {$message["freeSpace"]} GB of {$message["totalSpace"]} GB",
+                                    ],
+                                ],
+                            ],
+                            [
+                                "type" => "divider",
+                            ],
+                        ],
+                    ]]);
+                }
+                break;
             default:
                 break;
         }
